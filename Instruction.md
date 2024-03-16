@@ -18,12 +18,10 @@ git clone -b master https://github.com/raspberrypi/pico-sdk.git
 
 ## Set up PICO_SDK_PATH in your ~/.bashrc
 cd ~
-vi .bashrc
-
-Press i to enter into INSERT mode, then type the following at the bottom of the file:
+gedit .bashrc
+Add the following at the bottom of the file:
 export PICO_SDK_PATH=/home/your_username/pico/pico-sdk
-
-Press esc to exit INSERT mode, then type <b>:wq</b> and press Enter to exit.
+Save and exit.
 
 ## Install SDK dependencies
 sudo apt install -y cmake gcc-arm-none-eabi gcc g++
@@ -32,7 +30,7 @@ sudo apt install -y cmake gcc-arm-none-eabi gcc g++
 sudo apt install -y gdb-multiarch automake autoconf build-essential texinfo libtool libftdi-dev libusb-1.0-0-dev pkg-config
 
 ## Instal HIDAPI
-sudo apt install libudev-dev
+sudo apt install libudev-dev  (sudo apt-get install -y libhidapi-hidraw0)
 cd ~
 git clone https://github.com/libusb/hidapi.git
 cd hidapi
@@ -93,7 +91,7 @@ blinky.c
 target_link_libraries(blinky pico_stdlib)
 pico_add_extra_outputs(blinky)
 
-## Create a .vscode folder inside the blinky folder
-mkdir .vscode
-
-## Inside the .vscode folder create a launch.json file containing:
+Resources:
+https://www.hashdefineelectronics.com/compiling-and-installing-openocd-with-cmcsis-dap-support/
+https://dev.to/admantium/raspberry-pico-simple-debugging-with-just-one-device-4ce7
+https://raw.githubusercontent.com/raspberrypi/pico-setup/master/pico_setup.sh
