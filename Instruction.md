@@ -1,36 +1,29 @@
-## Install VSCode
-sudo snap install --classic code
-
-## Install required VSCode extensions
-code --install-extension marus25.cortex-debug
-code --install-extension ms-vscode.cmake-tools
-code --install-extension ms-vscode.cpptools
-
-## In home directory create pico folder
-cd ~
-mkdir pico
-
-## Install git
+## 1. Install git
+sudo apt update
 sudo apt install git
 
-## Clone Raspberry Pi Pico SDK repository
+## 2. In home directory create pico folder and clone the Raspberry Pi Pico SDK repository there
+cd ~
+mkdir pico
+cd pico
 git clone -b master https://github.com/raspberrypi/pico-sdk.git
 
-## Set up PICO_SDK_PATH in your ~/.bashrc
+## 3. Set up PICO_SDK_PATH in your ~/.bashrc
 cd ~
 gedit .bashrc
 Add the following at the bottom of the file:
 export PICO_SDK_PATH=/home/your_username/pico/pico-sdk
 Save and exit.
 
-## Install SDK dependencies
+## 4. Install SDK dependencies
 sudo apt install -y cmake gcc-arm-none-eabi gcc g++
 
-## Install OPENOCD dependencies
+## 5. Install OPENOCD dependencies
 sudo apt install -y gdb-multiarch automake autoconf build-essential texinfo libtool libftdi-dev libusb-1.0-0-dev pkg-config
 
-## Instal HIDAPI
-sudo apt install libudev-dev  (sudo apt-get install -y libhidapi-hidraw0)
+## 6. Instal HIDAPI
+sudo apt install libudev-dev
+sudo apt-get install -y libhidapi-hidraw0
 cd ~
 git clone https://github.com/libusb/hidapi.git
 cd hidapi
@@ -41,7 +34,7 @@ sudo make install
 cd ~
 sudo rm -R hidapi
 
-## Install OPENOCD
+## 7. Install OPENOCD
 cd ~
 git clone https://github.com/raspberrypi/openocd.git --branch rp2040 --depth=1
 git clone git://repo.or.cz/openocd.git
@@ -50,10 +43,28 @@ cd openocd
 ./configure --enable-cmsis-dap
 make
 sudo make install
-cd ~
-sudo rm -R openocd
 
-## Create folder for a test project "blinky" in our pico folder
+## Create the file /etc/udev/rules.d/98-openocd.rules and add this content:
+
+ACTION!="add|change", GOTO="openocd_rules_end"
+SUBSYSTEM!="usb|tty|hidraw", GOTO="openocd_rules_end"
+ATTRS{product}=="*CMSIS-DAP*", MODE="664" GROUP="plugdev"
+LABEL="openocd_rules_end"
+
+sudo gpasswd -a lucas plugdev
+sudo udevadm control --reload
+
+
+## Install VSCode
+sudo snap install --classic code
+
+## Install required VSCode extensions
+code --install-extension marus25.cortex-debug
+code --install-extension ms-vscode.cmake-tools
+code --install-extension ms-vscode.cpptools
+
+## 8. Create folder for a test project "blinky" in our pico folder
+cd ~
 cd pico
 mkdir blinky
 cd blinky
@@ -90,6 +101,10 @@ blinky.c
 )
 target_link_libraries(blinky pico_stdlib)
 pico_add_extra_outputs(blinky)
+
+
+
+
 
 Resources:
 https://www.hashdefineelectronics.com/compiling-and-installing-openocd-with-cmcsis-dap-support/
