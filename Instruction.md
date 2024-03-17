@@ -9,11 +9,7 @@ cd pico
 git clone -b master https://github.com/raspberrypi/pico-sdk.git
 
 ## 3. Set up PICO_SDK_PATH in your ~/.bashrc
-cd ~
-gedit .bashrc
-Add the following at the bottom of the file:
-export PICO_SDK_PATH=/home/your_username/pico/pico-sdk
-Save and exit.
+echo "export PICO_SDK_PATH=/home/lucas/pico/pico-sdk" >> ~/.bashrc
 
 ## 4. Install SDK dependencies
 sudo apt install -y cmake gcc-arm-none-eabi gcc g++
@@ -45,11 +41,20 @@ make
 sudo make install
 
 ## Create the file /etc/udev/rules.d/98-openocd.rules and add this content:
+bash << EOF
+sudo -i
+echo "ACTION!=\"add|change\", GOTO=\"openocd_rules_end\"
+SUBSYSTEM!=\"usb|tty|hidraw\", GOTO=\"openocd_rules_end\"
+ATTRS{product}==\"*CMSIS-DAP*\", MODE=\"664\" GROUP=\"plugdev\"
+LABEL=\"openocd_rules_end\"" >> /etc/udev/rules.d/thingy.rules
+exit
+EOF
 
 ACTION!="add|change", GOTO="openocd_rules_end"
 SUBSYSTEM!="usb|tty|hidraw", GOTO="openocd_rules_end"
 ATTRS{product}=="*CMSIS-DAP*", MODE="664" GROUP="plugdev"
 LABEL="openocd_rules_end"
+
 
 sudo gpasswd -a lucas plugdev
 sudo udevadm control --reload
