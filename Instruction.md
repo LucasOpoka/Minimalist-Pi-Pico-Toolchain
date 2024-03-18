@@ -40,35 +40,28 @@ cd openocd
 make
 sudo make install
 
-## Create the file /etc/udev/rules.d/98-openocd.rules and add this content:
+## 8. Create the file /etc/udev/rules.d/98-openocd.rules and add this content:
 bash << EOF
 sudo -i
 echo "ACTION!=\"add|change\", GOTO=\"openocd_rules_end\"
 SUBSYSTEM!=\"usb|tty|hidraw\", GOTO=\"openocd_rules_end\"
 ATTRS{product}==\"*CMSIS-DAP*\", MODE=\"664\" GROUP=\"plugdev\"
 LABEL=\"openocd_rules_end\"" >> /etc/udev/rules.d/thingy.rules
+gpasswd -a lucas plugdev
+udevadm control --reload
 exit
 EOF
 
-ACTION!="add|change", GOTO="openocd_rules_end"
-SUBSYSTEM!="usb|tty|hidraw", GOTO="openocd_rules_end"
-ATTRS{product}=="*CMSIS-DAP*", MODE="664" GROUP="plugdev"
-LABEL="openocd_rules_end"
 
-
-sudo gpasswd -a lucas plugdev
-sudo udevadm control --reload
-
-
-## Install VSCode
+## 9. Install VSCode
 sudo snap install --classic code
 
-## Install required VSCode extensions
+## 10. Install required VSCode extensions
 code --install-extension marus25.cortex-debug
 code --install-extension ms-vscode.cmake-tools
 code --install-extension ms-vscode.cpptools
 
-## 8. Create folder for a test project "blinky" in our pico folder
+## 11. Create folder for a test project "blinky" in our pico folder
 cd ~
 cd pico
 mkdir blinky
