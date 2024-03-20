@@ -60,6 +60,10 @@ code --install-extension marus25.cortex-debug
 code --install-extension ms-vscode.cmake-tools
 code --install-extension ms-vscode.cpptools
 
+## 11. Clone the Minimal Pi Pico Toolchain repository to home as pico
+cd ~
+git clone https://github.com/LucasOpoka/Minimalist-Pi-Pico-Toolchain.git pico
+
 
 
 Resources:
