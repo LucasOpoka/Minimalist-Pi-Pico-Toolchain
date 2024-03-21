@@ -2,9 +2,10 @@
 sudo apt update
 sudo apt install git
 
-## 2. In home directory create pico folder and clone the Raspberry Pi Pico SDK repository there
+## 2. Clone the Minimal Pi Pico Toolchain repository to home as pico, then clone the Raspberry Pi Pico SDK repository there
 cd ~
-mkdir pico
+git clone https://github.com/LucasOpoka/Minimalist-Pi-Pico-Toolchain.git pico
+
 cd pico
 git clone -b master https://github.com/raspberrypi/pico-sdk.git
 
@@ -59,10 +60,6 @@ sudo snap install --classic code
 code --install-extension marus25.cortex-debug
 code --install-extension ms-vscode.cmake-tools
 code --install-extension ms-vscode.cpptools
-
-## 11. Clone the Minimal Pi Pico Toolchain repository to home as pico
-cd ~
-git clone https://github.com/LucasOpoka/Minimalist-Pi-Pico-Toolchain.git pico
 
 
 
